@@ -10,7 +10,3 @@
   grid-template-columns: repeat(3, 1fr);
   place-items: center;
 }
-
-.Player__score > button {
-  padding: 5px;
-}
