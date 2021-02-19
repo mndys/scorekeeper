@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './Player.css'
 
 export default function Player({ name, score, onMinus, onPlus }) {
