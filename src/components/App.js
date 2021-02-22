@@ -6,7 +6,7 @@ import PlayerForm from './PlayerForm'
 function App() {
   return (
     <div className="App">
-      <PlayerForm onAddPlayer={() => console.log('onAddPlayer')} />
+      <PlayerForm onAddPlayer={name => console.log(name)} />
       <Player
         name="John Doe"
         score="10"
