@@ -25,7 +25,7 @@ export default function App() {
 
       {currentPage === 'game' && (
         <div>
-          <Header>{nameOfGame}</Header>
+          <Header title={nameOfGame} />
           {players.map(({ name, score }, index) => (
             <Player
               key={name}
