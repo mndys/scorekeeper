@@ -1,37 +1,71 @@
 import { useState } from 'react'
 import styled from 'styled-components/macro'
 import Button from './Button'
+import GameForm from './GameForm'
+import Header from './Header'
+import HistoryEntry from './HistoryEntry'
+import Navigation from './Navigation'
 import Player from './Player'
-import PlayerForm from './PlayerForm'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function App() {
   const [players, setPlayers] = useState([])
+  const [nameOfGame, setNameOfGame] = useState('')
+  const [currentPage, setCurrentPage] = useState('play')
+  const [history, setHistory] = useState([])
+
   return (
     <AppLayout>
-      <PlayerForm onAddPlayer={handleAddPlayer} />
-      {players.map(({ name, score }, index) => (
-        <Player
-          key={name}
-          name={name}
-          score={score}
-          onPlus={() => handlePlus(index)}
-          onMinus={() => handleMinus(index)}
-        />
-        // React.createElement(Player, {name, score, onPlus: () => handlePlus(index)})
-      ))}
-      <ButtonGrid>
-        <Button onClick={resetScores}>Reset scores</Button>
-        <DangerButton onClick={resetAll}>Reset all</DangerButton>
-      </ButtonGrid>
+      {/* conditional rendering */}
+      {currentPage === 'play' && (
+        <div>
+          <GameForm onCreateGame={createGame} />
+        </div>
+      )}
+
+      {currentPage === 'game' && (
+        <div>
+          <Header>{nameOfGame}</Header>
+          {players.map(({ name, score }, index) => (
+            <Player
+              key={name}
+              name={name}
+              score={score}
+              onPlus={() => handlePlus(index)}
+              onMinus={() => handleMinus(index)}
+            />
+          ))}
+          <Button onClick={resetScores}>Reset scores</Button>
+          <Button onClick={endGame}>End game</Button>
+        </div>
+      )}
+
+      {currentPage === 'history' && (
+        <HistoryWrapper>
+          {history.map(({ nameOfGame, players, id }) => (
+            <HistoryEntry key={id} nameOfGame={nameOfGame} players={players} />
+          ))}
+        </HistoryWrapper>
+      )}
+
+      {(currentPage === 'play' || currentPage === 'history') && (
+        <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
+      )}
     </AppLayout>
   )
 
-  function handleAddPlayer(name) {
-    setPlayers(oldPlayers => [...oldPlayers, { name, score: 0 }])
+  function createGame({ nameOfGame, playerNames }) {
+    // playerNames is ['Jane', 'John']
+    setNameOfGame(nameOfGame)
+    setPlayers(playerNames.map(name => ({ name, score: 0 })))
+    setCurrentPage('game')
   }
 
-  function resetAll() {
+  function endGame() {
+    setHistory([{ players, nameOfGame, id: uuidv4() }, ...history])
     setPlayers([])
+    setNameOfGame('')
+    setCurrentPage('play')
   }
 
   function resetScores() {
@@ -62,12 +96,8 @@ const AppLayout = styled.div`
   gap: 20px;
   padding: 20px;
 `
-const DangerButton = styled(Button)`
-  background-color: mistyrose;
-  border: 1px solid red;
-`
-const ButtonGrid = styled.div`
+
+const HistoryWrapper = styled.div`
   display: grid;
-  gap: 5px;
-  grid-template-columns: 1fr 1fr;
+  gap: 28px;
 `
