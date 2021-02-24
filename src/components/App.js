@@ -24,7 +24,7 @@ export default function App() {
       )}
 
       {currentPage === 'game' && (
-        <div>
+        <GameWrapper>
           <Header title={nameOfGame} />
           {players.map(({ name, score }, index) => (
             <Player
@@ -37,7 +37,7 @@ export default function App() {
           ))}
           <Button onClick={resetScores}>Reset scores</Button>
           <Button onClick={endGame}>End game</Button>
-        </div>
+        </GameWrapper>
       )}
 
       {currentPage === 'history' && (
@@ -98,6 +98,11 @@ const AppLayout = styled.div`
 `
 
 const HistoryWrapper = styled.div`
+  display: grid;
+  gap: 28px;
+`
+
+const GameWrapper = styled.div`
   display: grid;
   gap: 28px;
 `
