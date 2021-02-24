@@ -7,7 +7,6 @@ import HistoryEntry from './HistoryEntry'
 import Navigation from './Navigation'
 import Player from './Player'
 import { v4 as uuidv4 } from 'uuid'
-import GamePage from './GamePage'
 
 export default function App() {
   const [players, setPlayers] = useState([])
@@ -17,6 +16,7 @@ export default function App() {
 
   return (
     <AppLayout>
+      {/* conditional rendering */}
       {currentPage === 'play' && (
         <div>
           <GameForm onCreateGame={createGame} />
@@ -24,14 +24,20 @@ export default function App() {
       )}
 
       {currentPage === 'game' && (
-        <GamePage
-          nameOfGame={nameOfGame}
-          players={players}
-          handlePlus={handlePlus}
-          handleMinus={handleMinus}
-          resetScores={resetScores}
-          endGame={endGame}
-        ></GamePage>
+        <GameWrapper>
+          <Header title={nameOfGame} />
+          {players.map(({ name, score }, index) => (
+            <Player
+              key={name}
+              name={name}
+              score={score}
+              onPlus={() => handlePlus(index)}
+              onMinus={() => handleMinus(index)}
+            />
+          ))}
+          <Button onClick={resetScores}>Reset scores</Button>
+          <Button onClick={endGame}>End game</Button>
+        </GameWrapper>
       )}
 
       {currentPage === 'history' && (
