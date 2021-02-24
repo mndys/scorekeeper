@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export default function HistoryEntry({ nameOfGame, players }) {
   return (
     <Wrapper>
-      {nameOfGame}
+      <h2>{nameOfGame}</h2>
       {players.map((player, index) => (
         <Player key={index}>
           <span>{player.name}</span>
@@ -18,6 +18,7 @@ export default function HistoryEntry({ nameOfGame, players }) {
 const Wrapper = styled.section`
   display: grid;
   gap: 10px;
+  border-top: dotted 2px lightgrey;
 `
 
 const Player = styled.div`
