@@ -14,8 +14,4 @@ export default function HistoryPage({ history }) {
 const HistoryWrapper = styled.div`
   display: grid;
   gap: 28px;
-
-  section:first-of-type {
-    border-top: none;
-  }
 `
