@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import styled from 'styled-components/macro'
-import Button from './Button'
-import GameForm from './GameForm'
-import Header from './Header'
-import HistoryEntry from './HistoryEntry'
 import Navigation from './Navigation'
-import Player from './Player'
 import { v4 as uuidv4 } from 'uuid'
 import GamePage from './GamePage'
+import PlayPage from './PlayPage'
+import HistoryPage from './HistoryPage'
 
 export default function App() {
   const [players, setPlayers] = useState([])
@@ -17,11 +14,7 @@ export default function App() {
 
   return (
     <AppLayout>
-      {currentPage === 'play' && (
-        <div>
-          <GameForm onCreateGame={createGame} />
-        </div>
-      )}
+      {currentPage === 'play' && <PlayPage createGame={createGame} />}
 
       {currentPage === 'game' && (
         <GamePage
@@ -31,19 +24,17 @@ export default function App() {
           handleMinus={handleMinus}
           resetScores={resetScores}
           endGame={endGame}
-        ></GamePage>
+        />
       )}
 
-      {currentPage === 'history' && (
-        <HistoryWrapper>
-          {history.map(({ nameOfGame, players, id }) => (
-            <HistoryEntry key={id} nameOfGame={nameOfGame} players={players} />
-          ))}
-        </HistoryWrapper>
-      )}
+      {currentPage === 'history' && <HistoryPage history={history} />}
 
       {(currentPage === 'play' || currentPage === 'history') && (
-        <Navigation currentPage={currentPage} onNavigate={setCurrentPage} />
+        <Navigation
+          currentPage={currentPage}
+          onNavigate={setCurrentPage}
+          history={history}
+        />
       )}
     </AppLayout>
   )
@@ -89,18 +80,4 @@ const AppLayout = styled.div`
   display: grid;
   gap: 20px;
   padding: 20px;
-`
-
-const HistoryWrapper = styled.div`
-  display: grid;
-  gap: 28px;
-
-  section:first-of-type {
-    border-top: none;
-  }
-`
-
-const GameWrapper = styled.div`
-  display: grid;
-  gap: 28px;
 `
