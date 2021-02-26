@@ -19,7 +19,7 @@ describe('GameForm', () => {
     userEvent.type(screen.getByLabelText('Player names'), 'Jane, John')
     userEvent.click(screen.getByRole('button'))
     expect(callback).toHaveBeenCalledWith({
-      nameOfGame: 'Carcassonne',
+      nameOfGame: expect.stringMatching(/\w+/),
       playerNames: ['Jane', 'John'],
     })
   })

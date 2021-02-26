@@ -10,4 +10,13 @@ describe('Button', () => {
 
     expect(defaultColor).not.toBe(otherColor)
   })
+
+  it('text color is white when active', () => {
+    const { rerender, container } = render(<Button>Test</Button>)
+    const defaultTextColor = getComputedStyle(container.firstChild).color
+    rerender(<Button isActive>Text</Button>)
+    const otherTextColor = getComputedStyle(container.firstChild).color
+
+    expect(otherTextColor).not.toBe(defaultTextColor)
+  })
 })
